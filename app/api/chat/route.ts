@@ -2,16 +2,103 @@ import { type NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
   try {
-    const { message, history } = await request.json()
+    const { message, history, model } = await request.json()
 
-    // For now, we'll create a simple response system
-    // In a real implementation, you would integrate with Gemini API here
-    const response = await generateResponse(message, history)
+    let response: string
+    
+    if (model === "gemini") {
+      // Use Gemini API for ML/AI-related queries
+      response = await generateGeminiResponse(message, history)
+    } else {
+      // Use the default simple response system
+      response = await generateResponse(message, history)
+    }
 
     return NextResponse.json({ response })
   } catch (error) {
     console.error("Chat API error:", error)
     return NextResponse.json({ error: "Failed to process message" }, { status: 500 })
+  }
+}
+
+async function generateGeminiResponse(message: string, history: any[]) {
+  try {
+    const API_KEY = process.env.GEMINI_API_KEY
+    if (!API_KEY) {
+      throw new Error("Gemini API key not configured")
+    }
+    
+    // Create conversation context from history
+    const conversationContext = history.map((msg: any) => {
+      return {
+        role: msg.role === "user" ? "user" : "model",
+        parts: [{ text: msg.content }]
+      }
+    })
+
+    // Add educational context to ensure responses focus on ML/AI topics
+    const educationalPrompt = {
+      role: "user",
+      parts: [{ text: "Please act as an educational assistant focused only on machine learning, AI, data science, mathematics, and statistics. Only respond to questions related to these topics. If a question is unrelated, politely redirect to relevant educational content." }]
+    }
+    
+    // Prepare the current message
+    const userMessage = {
+      role: "user",
+      parts: [{ text: message }]
+    }
+    
+    // Complete prompt with history, educational context, and current message
+    const prompt = [educationalPrompt, ...conversationContext, userMessage]
+
+    // Make request to Gemini API
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${API_KEY}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        contents: prompt,
+        generationConfig: {
+          temperature: 0.7,
+          topK: 40,
+          topP: 0.95,
+          maxOutputTokens: 800,
+        },
+        safetySettings: [
+          {
+            category: "HARM_CATEGORY_HARASSMENT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_HATE_SPEECH",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          }
+        ]
+      })
+    })
+
+    const data = await response.json()
+    
+    if (data.error) {
+      throw new Error(data.error.message || "Error from Gemini API")
+    }
+    
+    // Extract text response from Gemini
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || 
+           "I'm sorry, I couldn't process that request. Please try again with a question about machine learning, AI, or data science."
+    
+  } catch (error) {
+    console.error("Gemini API error:", error)
+    return "I'm sorry, I encountered an error connecting to Gemini. Please try again later or switch to the default model."
   }
 }
 

@@ -8,6 +8,9 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { MessageSquare, Send, X, Minimize2, Maximize2, Bot, User } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
+type ModelType = "default" | "gemini"
 
 interface Message {
   id: string
@@ -19,6 +22,7 @@ interface Message {
 export function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
+  const [selectedModel, setSelectedModel] = useState<ModelType>("default")
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -68,6 +72,7 @@ export function ChatbotWidget() {
         body: JSON.stringify({
           message: inputValue,
           history: messages.slice(-5), // Send last 5 messages for context
+          model: selectedModel,
         }),
       })
 
@@ -125,22 +130,40 @@ export function ChatbotWidget() {
           isMinimized ? "w-80 h-16" : "w-96 h-[500px]"
         }`}
       >
-        <CardHeader className="flex flex-row items-center justify-between p-4 border-b border-border">
-          <CardTitle className="flex items-center gap-2 text-card-foreground">
-            <div className="rounded-full bg-primary/10 p-1">
-              <Bot className="h-4 w-4 text-primary" />
+        <CardHeader className="flex flex-col p-4 border-b border-border space-y-2">
+          <div className="flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2 text-card-foreground">
+              <div className="rounded-full bg-primary/10 p-1">
+                <Bot className="h-4 w-4 text-primary" />
+              </div>
+              ML Assistant
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            </CardTitle>
+            <div className="flex items-center gap-1">
+              <Button variant="ghost" size="sm" onClick={() => setIsMinimized(!isMinimized)} className="h-8 w-8 p-0">
+                {isMinimized ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)} className="h-8 w-8 p-0">
+                <X className="h-4 w-4" />
+              </Button>
             </div>
-            ML Assistant
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          </CardTitle>
-          <div className="flex items-center gap-1">
-            <Button variant="ghost" size="sm" onClick={() => setIsMinimized(!isMinimized)} className="h-8 w-8 p-0">
-              {isMinimized ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
-            </Button>
-            <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)} className="h-8 w-8 p-0">
-              <X className="h-4 w-4" />
-            </Button>
           </div>
+          {!isMinimized && (
+            <div className="flex items-center justify-end">
+              <Select
+                value={selectedModel}
+                onValueChange={(value: ModelType) => setSelectedModel(value as ModelType)}
+              >
+                <SelectTrigger className="w-[140px] h-8 text-xs">
+                  <SelectValue placeholder="Select Model" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="default">Default LLM</SelectItem>
+                  <SelectItem value="gemini">Gemini AI</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
         </CardHeader>
 
         {!isMinimized && (
