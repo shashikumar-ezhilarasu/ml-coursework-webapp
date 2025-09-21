@@ -3,17 +3,21 @@ import { type NextRequest, NextResponse } from "next/server"
 export async function POST(request: NextRequest) {
   try {
     const { message, history, model } = await request.json()
+    console.log(`API received request with model: ${model}`)
 
     let response: string
     
     if (model === "gemini") {
       // Use Gemini API for ML/AI-related queries
+      console.log("Using Gemini API for response")
       response = await generateGeminiResponse(message, history)
     } else {
       // Use the default simple response system
+      console.log("Using default response system")
       response = await generateResponse(message, history)
     }
 
+    console.log(`API sending response: ${response.substring(0, 50)}...`)
     return NextResponse.json({ response })
   } catch (error) {
     console.error("Chat API error:", error)
@@ -87,14 +91,23 @@ async function generateGeminiResponse(message: string, history: any[]) {
     })
 
     const data = await response.json()
+    console.log("Gemini API raw response:", JSON.stringify(data).substring(0, 500))
     
     if (data.error) {
+      console.error("Gemini API error:", data.error)
       throw new Error(data.error.message || "Error from Gemini API")
     }
     
-    // Extract text response from Gemini
-    return data.candidates?.[0]?.content?.parts?.[0]?.text || 
-           "I'm sorry, I couldn't process that request. Please try again with a question about machine learning, AI, or data science."
+    // Extract text response from Gemini with improved logging
+    const textResponse = data.candidates?.[0]?.content?.parts?.[0]?.text
+    
+    if (!textResponse) {
+      console.error("Could not extract text response from Gemini API", data)
+      return "I'm sorry, I couldn't process that request. Please try again with a question about machine learning, AI, or data science."
+    }
+    
+    console.log("Successfully extracted Gemini response:", textResponse.substring(0, 100))
+    return textResponse
     
   } catch (error) {
     console.error("Gemini API error:", error)

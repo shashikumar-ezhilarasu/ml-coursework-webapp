@@ -64,6 +64,7 @@ export function ChatbotWidget() {
     setIsLoading(true)
 
     try {
+      console.log(`Sending message with model: ${selectedModel}`)
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -81,10 +82,11 @@ export function ChatbotWidget() {
       }
 
       const data = await response.json()
+      console.log("API response:", data)
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: data.response,
+        content: data.response || "No response received from API",
         role: "assistant",
         timestamp: new Date(),
       }
