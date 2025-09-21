@@ -269,6 +269,7 @@ export default function DocumentationPage() {
                   <Brain className="h-3 w-3" />
                   Learning Paths
                 </Link>
+                {/* AUTH LINK COMMENTED OUT FOR NOW
                 <Link 
                   href="/auth/sign-up" 
                   className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -276,6 +277,7 @@ export default function DocumentationPage() {
                   <ExternalLink className="h-3 w-3" />
                   Get Started
                 </Link>
+                */}
               </div>
             </div>
           </ScrollArea>
@@ -430,7 +432,7 @@ export default function DocumentationPage() {
                         </ul>
                       </div>
                       <Button className="w-full mt-6" variant="outline">
-                        <Link href={`/learning-paths/${path.title.toLowerCase().replace(/\s+/g, '-')}`} className="flex items-center">
+                        <Link href={`/courses/${path.title.toLowerCase().replace(/\s+/g, '-')}`} className="flex items-center">
                           Start Path
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
@@ -521,14 +523,22 @@ export default function DocumentationPage() {
                     Get access to courses, interactive labs, and personalized learning paths.
                   </p>
                   <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+                    {/* AUTH BUTTON COMMENTED OUT FOR NOW
                     <Button asChild size="lg">
                       <Link href="/auth/sign-up" className="flex items-center">
                         <Users className="mr-2 h-4 w-4" />
                         Join Now - Free
                       </Link>
                     </Button>
+                    */}
+                    <Button asChild size="lg">
+                      <Link href="/courses" className="flex items-center">
+                        <Users className="mr-2 h-4 w-4" />
+                        Explore Courses
+                      </Link>
+                    </Button>
                     <Button asChild variant="outline" size="lg">
-                      <Link href="/courses">Browse Courses</Link>
+                      <Link href="/learning-paths">Learning Paths</Link>
                     </Button>
                   </div>
                 </CardContent>
