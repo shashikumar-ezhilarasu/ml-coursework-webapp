@@ -23,14 +23,12 @@ export default async function CoursePage({ params }: CoursePageProps) {
       created_at: "2024-01-01",
       duration: "4-6 weeks",
       modules: 6,
-      syllabus: [
-        { id: 1, title: "Introduction to Machine Learning", description: "Overview of ML concepts", week: 1 },
-        { id: 2, title: "Types of Learning", description: "Supervised vs Unsupervised", week: 2 },
-        { id: 3, title: "Linear Algebra Basics", description: "Mathematical foundations", week: 3 },
-        { id: 4, title: "Regression & Classification", description: "Core algorithms", week: 4 },
-        { id: 5, title: "Model Evaluation", description: "Metrics and validation", week: 5 },
-        { id: 6, title: "Neural Networks Intro", description: "Basic neural networks", week: 6 }
-      ]
+      syllabus: `Introduction to Machine Learning
+Types of Learning: Supervised vs Unsupervised  
+Linear Algebra Basics: Vectors and Matrices
+Regression & Classification Algorithms
+Model Evaluation and Validation
+Neural Networks Introduction`
     },
     "supervised-learning": {
       id: "supervised-learning", 
@@ -40,16 +38,14 @@ export default async function CoursePage({ params }: CoursePageProps) {
       created_at: "2024-01-02",
       duration: "6-8 weeks",
       modules: 8,
-      syllabus: [
-        { id: 1, title: "Linear & Logistic Regression", description: "Foundation algorithms", week: 1 },
-        { id: 2, title: "Decision Trees", description: "Tree-based models", week: 2 },
-        { id: 3, title: "Random Forests", description: "Ensemble methods", week: 3 },
-        { id: 4, title: "Support Vector Machines", description: "SVM algorithms", week: 4 },
-        { id: 5, title: "Naive Bayes", description: "Probabilistic classifiers", week: 5 },
-        { id: 6, title: "k-Nearest Neighbors", description: "Instance-based learning", week: 6 },
-        { id: 7, title: "Ensemble Methods", description: "Boosting and bagging", week: 7 },
-        { id: 8, title: "Model Selection", description: "Choosing the right model", week: 8 }
-      ]
+      syllabus: `Linear & Logistic Regression Fundamentals
+Decision Trees and Tree-based Models
+Random Forests and Ensemble Methods
+Support Vector Machines (SVM)
+Naive Bayes Classification
+k-Nearest Neighbors Algorithm
+Advanced Ensemble Methods
+Model Selection and Hyperparameter Tuning`
     },
     "deep-learning": {
       id: "deep-learning",
@@ -59,18 +55,16 @@ export default async function CoursePage({ params }: CoursePageProps) {
       created_at: "2024-01-03",
       duration: "8-10 weeks",
       modules: 10,
-      syllabus: [
-        { id: 1, title: "Perceptrons & Multi-layer Networks", description: "Basic neural architectures", week: 1 },
-        { id: 2, title: "Backpropagation", description: "Training neural networks", week: 2 },
-        { id: 3, title: "CNNs", description: "Convolutional neural networks", week: 3 },
-        { id: 4, title: "RNNs & LSTMs", description: "Recurrent networks", week: 4 },
-        { id: 5, title: "Attention Mechanisms", description: "Attention in deep learning", week: 5 },
-        { id: 6, title: "Transformers", description: "Transformer architecture", week: 6 },
-        { id: 7, title: "GANs", description: "Generative adversarial networks", week: 7 },
-        { id: 8, title: "Transfer Learning", description: "Leveraging pre-trained models", week: 8 },
-        { id: 9, title: "Model Optimization", description: "Improving performance", week: 9 },
-        { id: 10, title: "Deployment", description: "Deploying deep learning models", week: 10 }
-      ]
+      syllabus: `Perceptrons & Multi-layer Networks
+Backpropagation Algorithm
+Convolutional Neural Networks (CNNs)
+Recurrent Neural Networks (RNNs & LSTMs)
+Attention Mechanisms and Transformers
+Generative Adversarial Networks (GANs)
+Transfer Learning Techniques
+Model Optimization and Deployment
+Advanced Deep Learning Architectures
+Real-world Applications and Case Studies`
     }
   }
 
@@ -114,7 +108,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
           </TabsContent>
 
           <TabsContent value="materials" className="mt-6">
-            <CourseMaterials materials={materials || []} />
+            <CourseMaterials courseId={id} />
           </TabsContent>
 
           <TabsContent value="videos" className="mt-6">
