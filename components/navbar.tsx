@@ -45,7 +45,8 @@ export function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Auth Buttons */}
+          {/* Desktop Auth Buttons - COMMENTED OUT FOR NOW */}
+          {/* 
           <div className="hidden md:flex md:items-center md:space-x-4">
             <Button asChild variant="ghost">
               <Link href="/auth/login">Sign In</Link>
@@ -54,6 +55,7 @@ export function Navbar() {
               <Link href="/auth/sign-up">Get Started</Link>
             </Button>
           </div>
+          */}
 
           {/* Mobile menu button */}
           <div className="md:hidden">
@@ -91,6 +93,8 @@ export function Navbar() {
                 <FileText className="h-4 w-4" />
                 <span>Courses</span>
               </Link>
+              {/* Mobile Auth Buttons - COMMENTED OUT FOR NOW */}
+              {/*
               <div className="mt-4 space-y-2">
                 <Button asChild variant="ghost" className="w-full justify-start">
                   <Link href="/auth/login" onClick={() => setIsMenuOpen(false)}>Sign In</Link>
@@ -99,6 +103,7 @@ export function Navbar() {
                   <Link href="/auth/sign-up" onClick={() => setIsMenuOpen(false)}>Get Started</Link>
                 </Button>
               </div>
+              */}
             </div>
           </div>
         )}

@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ChatbotWidget } from "@/components/chatbot/chatbot-widget"
-import { AuthProvider } from "@/lib/firebase/auth-context"
+// import { AuthProvider } from "@/lib/firebase/auth-context" // COMMENTED OUT FOR NOW
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -22,10 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={inter.className}>
-        <AuthProvider>
+        {/* <AuthProvider> AUTH PROVIDER COMMENTED OUT FOR NOW */}
           {children}
           <ChatbotWidget />
-        </AuthProvider>
+        {/* </AuthProvider> */}
       </body>
     </html>
   )

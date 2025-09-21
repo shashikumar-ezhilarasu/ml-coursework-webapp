@@ -1,7 +1,10 @@
-"use client"
+/* 
+DASHBOARD AUTH COMMENTED OUT FOR NOW - ENABLE LATER
+*/
 
-import { useAuth } from "@/lib/firebase/auth-context"
-import { ProtectedRoute } from "@/components/auth/protected-route"
+import { Navbar } from "@/components/navbar"
+// import { useAuth } from "@/lib/firebase/auth-context"
+// import { ProtectedRoute } from "@/components/auth/protected-route"
 import { DashboardHeader } from "@/components/dashboard/dashboard-header"
 import { QuickStats } from "@/components/dashboard/quick-stats"
 import { RecentActivity } from "@/components/dashboard/recent-activity"
@@ -9,22 +12,30 @@ import { LearningPathProgress } from "@/components/dashboard/learning-path-progr
 import { UpcomingDeadlines } from "@/components/dashboard/upcoming-deadlines"
 
 export default function DashboardPage() {
-  const { user } = useAuth()
+  // const { user } = useAuth()
 
-  // Mock profile data for now (you'll replace this with Firestore data later)
+  // Mock data for development
+  const mockUser = {
+    uid: "demo-user",
+    displayName: "Demo Student",
+    email: "demo@example.com"
+  }
+
+  // Mock profile data for now
   const profile = {
-    id: user?.uid || "",
-    full_name: user?.displayName || "Student",
-    email: user?.email || "",
+    id: "demo-user",
+    full_name: "Demo Student",
+    email: "demo@example.com",
     student_id: "STU001",
     enrollment_date: "2024-01-15",
     role: "student"
   }
 
   return (
-    <ProtectedRoute>
+    // <ProtectedRoute> {/* COMMENTED OUT FOR NOW */}
       <div className="min-h-screen bg-background">
-        <DashboardHeader user={user} profile={profile} />
+        <Navbar />
+        {/* <DashboardHeader user={mockUser} profile={profile} /> */}
         
         <main className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
           <div className="mb-8">
@@ -56,6 +67,6 @@ export default function DashboardPage() {
           </div>
         </main>
       </div>
-    </ProtectedRoute>
+    // </ProtectedRoute> {/* COMMENTED OUT FOR NOW */}
   )
 }
