@@ -34,14 +34,38 @@ export function CourseMaterials({ courseId }: CourseMaterialsProps) {
 
   async function fetchMaterials() {
     try {
-      const { data, error } = await supabase
-        .from("course_materials")
-        .select("*")
-        .eq("course_id", courseId)
-        .order("created_at", { ascending: false })
+      // Mock data for now - replace with real Firebase queries later
+      const mockMaterials = [
+        {
+          id: "1",
+          title: "Introduction Video",
+          description: "Course introduction and overview",
+          type: "video",
+          content: "Welcome to the course! In this introduction video...",
+          file_url: "https://example.com/intro-video.mp4",
+          created_at: new Date().toISOString()
+        },
+        {
+          id: "2",
+          title: "Course Syllabus",
+          description: "Complete course syllabus and schedule",
+          type: "document",
+          content: "This document contains the complete syllabus...",
+          file_url: "https://example.com/syllabus.pdf",
+          created_at: new Date().toISOString()
+        },
+        {
+          id: "3",
+          title: "Assignment 1",
+          description: "First programming assignment",
+          type: "assignment",
+          content: "Complete the following exercises...",
+          file_url: "https://example.com/assignment1.pdf",
+          created_at: new Date().toISOString()
+        }
+      ]
 
-      if (error) throw error
-      setMaterials(data || [])
+      setMaterials(mockMaterials)
     } catch (error) {
       console.error("Error fetching materials:", error)
       toast.error("Failed to load materials")

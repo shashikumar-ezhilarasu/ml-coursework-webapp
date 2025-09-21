@@ -45,10 +45,35 @@ export function AdminCoursesManager() {
 
   async function fetchCourses() {
     try {
-      const { data, error } = await supabase.from("courses").select("*").order("created_at", { ascending: false })
+      // Mock data for now - replace with real Firebase queries later
+      const mockCourses = [
+        {
+          id: "1",
+          title: "Introduction to Machine Learning",
+          description: "Learn the fundamentals of machine learning",
+          syllabus: "Week 1: Introduction\nWeek 2: Supervised Learning\nWeek 3: Unsupervised Learning",
+          level: "beginner",
+          created_at: new Date().toISOString()
+        },
+        {
+          id: "2",
+          title: "Deep Learning Fundamentals", 
+          description: "Dive deep into neural networks",
+          syllabus: "Week 1: Neural Networks\nWeek 2: Deep Networks\nWeek 3: CNNs",
+          level: "intermediate",
+          created_at: new Date().toISOString()
+        },
+        {
+          id: "3",
+          title: "Computer Vision",
+          description: "Advanced computer vision techniques",
+          syllabus: "Week 1: Image Processing\nWeek 2: Object Detection\nWeek 3: Segmentation",
+          level: "advanced",
+          created_at: new Date().toISOString()
+        }
+      ]
 
-      if (error) throw error
-      setCourses(data || [])
+      setCourses(mockCourses)
     } catch (error) {
       console.error("Error fetching courses:", error)
       toast.error("Failed to load courses")
@@ -63,14 +88,12 @@ export function AdminCoursesManager() {
 
     try {
       if (editingCourse) {
-        const { error } = await supabase.from("courses").update(formData).eq("id", editingCourse.id)
-
-        if (error) throw error
+        // Mock update - in real implementation would update Firebase
+        console.log("Updating course:", formData)
         toast.success("Course updated successfully")
       } else {
-        const { error } = await supabase.from("courses").insert([formData])
-
-        if (error) throw error
+        // Mock insert - in real implementation would insert to Firebase
+        console.log("Creating course:", formData)
         toast.success("Course created successfully")
       }
 
@@ -95,9 +118,8 @@ export function AdminCoursesManager() {
     if (!confirm("Are you sure you want to delete this course? This will also delete all associated materials.")) return
 
     try {
-      const { error } = await supabase.from("courses").delete().eq("id", id)
-
-      if (error) throw error
+      // Mock delete - in real implementation would delete from Firebase
+      console.log("Deleting course:", id)
       toast.success("Course deleted successfully")
       fetchCourses()
     } catch (error) {

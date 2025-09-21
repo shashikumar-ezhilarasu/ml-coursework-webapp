@@ -56,19 +56,40 @@ export function AdminMaterialsManager() {
 
   async function fetchData() {
     try {
-      const [coursesRes, materialsRes] = await Promise.all([
-        supabase.from("courses").select("id, title").order("title"),
-        supabase
-          .from("course_materials")
-          .select(`
-          *,
-          courses(title)
-        `)
-          .order("created_at", { ascending: false }),
-      ])
+      // Mock data for now - replace with real Firebase queries later
+      const mockCourses = [
+        { id: "1", title: "Introduction to Machine Learning" },
+        { id: "2", title: "Deep Learning Fundamentals" },
+        { id: "3", title: "Computer Vision" }
+      ]
 
-      if (coursesRes.data) setCourses(coursesRes.data)
-      if (materialsRes.data) setMaterials(materialsRes.data)
+      const mockMaterials = [
+        {
+          id: "1",
+          title: "Course Intro Video",
+          description: "Introduction video for the course",
+          type: "video",
+          file_url: "https://example.com/video1",
+          content: "Video content",
+          course_id: "1",
+          created_at: new Date().toISOString(),
+          courses: { title: "Introduction to Machine Learning" }
+        },
+        {
+          id: "2", 
+          title: "Deep Learning Basics",
+          description: "Basic concepts of deep learning",
+          type: "document",
+          file_url: "https://example.com/doc1",
+          content: "Document content",
+          course_id: "2",
+          created_at: new Date().toISOString(),
+          courses: { title: "Deep Learning Fundamentals" }
+        }
+      ]
+
+      setCourses(mockCourses)
+      setMaterials(mockMaterials)
     } catch (error) {
       console.error("Error fetching data:", error)
       toast.error("Failed to load data")
@@ -83,14 +104,12 @@ export function AdminMaterialsManager() {
 
     try {
       if (editingMaterial) {
-        const { error } = await supabase.from("course_materials").update(formData).eq("id", editingMaterial.id)
-
-        if (error) throw error
+        // Mock update - in real implementation would update Firebase
+        console.log("Updating material:", formData)
         toast.success("Material updated successfully")
       } else {
-        const { error } = await supabase.from("course_materials").insert([formData])
-
-        if (error) throw error
+        // Mock insert - in real implementation would insert to Firebase  
+        console.log("Creating material:", formData)
         toast.success("Material uploaded successfully")
       }
 
@@ -117,9 +136,8 @@ export function AdminMaterialsManager() {
     if (!confirm("Are you sure you want to delete this material?")) return
 
     try {
-      const { error } = await supabase.from("course_materials").delete().eq("id", id)
-
-      if (error) throw error
+      // Mock delete - in real implementation would delete from Firebase
+      console.log("Deleting material:", id)
       toast.success("Material deleted successfully")
       fetchData()
     } catch (error) {

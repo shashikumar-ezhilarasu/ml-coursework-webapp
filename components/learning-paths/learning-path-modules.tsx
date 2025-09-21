@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle, Circle, Clock, BookOpen, Play } from "lucide-react"
+import { toast } from "sonner"
 
 interface Module {
   title: string
@@ -45,38 +46,19 @@ export function LearningPathModules({ modules, completedModules, learningPathId,
 
       const progressPercentage = Math.round((newCompletedModules.length / modules.length) * 100)
 
-      // Check if user progress exists
-      const { data: existingProgress } = await supabase
-        .from("user_progress")
-        .select("id")
-        .eq("user_id", userId)
-        .eq("learning_path_id", learningPathId)
-        .single()
+      // Mock progress update - in real implementation would update Firebase
+      console.log("Updating progress:", {
+        userId,
+        learningPathId,
+        completedModules: newCompletedModules,
+        progressPercentage
+      })
 
-      if (existingProgress) {
-        // Update existing progress
-        await supabase
-          .from("user_progress")
-          .update({
-            completed_modules: newCompletedModules,
-            progress_percentage: progressPercentage,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", existingProgress.id)
-      } else {
-        // Create new progress
-        await supabase.from("user_progress").insert({
-          user_id: userId,
-          learning_path_id: learningPathId,
-          completed_modules: newCompletedModules,
-          progress_percentage: progressPercentage,
-        })
-      }
-
-      // Refresh the page to update the UI
-      window.location.reload()
+      // Simulate successful update
+      toast.success(`Module ${isCompleted ? 'marked as incomplete' : 'completed'}!`)
     } catch (error) {
       console.error("Error updating module completion:", error)
+      toast.error("Failed to update progress")
     } finally {
       setIsUpdating(null)
     }

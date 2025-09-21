@@ -81,15 +81,11 @@ export function NoteEditor({ note, courses }: NoteEditorProps) {
       }
 
       if (note) {
-        // Update existing note
-        const { error } = await supabase.from("user_notes").update(noteData).eq("id", note.id).eq("user_id", user.uid)
-
-        if (error) throw error
+        // Mock update - in real implementation would update Firebase
+        console.log("Updating note:", noteData)
       } else {
-        // Create new note
-        const { error } = await supabase.from("user_notes").insert(noteData)
-
-        if (error) throw error
+        // Mock create - in real implementation would create in Firebase
+        console.log("Creating note:", noteData)
       }
 
       router.push("/notes")
