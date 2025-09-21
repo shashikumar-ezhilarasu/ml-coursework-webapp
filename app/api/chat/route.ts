@@ -85,13 +85,15 @@ async function generateGeminiResponse(message: string, history: any[]) {
       }
     })
 
-    // Simplify prompt to reduce token count (to avoid quota issues)
-    const simplifiedPrompt = `You are an educational assistant. Answer this question about ${message.includes("machine learning") ? "machine learning" : message.includes("AI") ? "AI" : message.includes("data") ? "data science" : "computer science"} in an educational way: ${message}`
+    // Create a structured prompt for Gemini 1.5 Flash
+    const simplifiedPrompt = `Act as a highly knowledgeable tutor specializing in machine learning, AI, statistics, mathematics, and data science. 
+Provide an educational and accurate answer to this question: ${message}
+Focus only on educational content related to these topics.`
     
-    console.log("Sending request to Gemini API with simplified prompt to avoid quota issues")
+    console.log("Sending request to Gemini API with simplified prompt using Gemini 1.5 Flash model")
     
-    // Use the correct API endpoint for Gemini
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`
+    // Use the Gemini 1.5 Flash model endpoint
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`
     
     // Make request to Gemini API with simplified payload
     const response = await fetch(apiUrl, {
@@ -108,9 +110,21 @@ async function generateGeminiResponse(message: string, history: any[]) {
           }
         ],
         generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 800,
-        }
+          temperature: 0.2, // Lower temperature for more focused educational responses
+          maxOutputTokens: 1024,
+          topK: 40,
+          topP: 0.95
+        },
+        safetySettings: [
+          {
+            category: "HARM_CATEGORY_HARASSMENT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_HATE_SPEECH",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          }
+        ]
       })
     })
 

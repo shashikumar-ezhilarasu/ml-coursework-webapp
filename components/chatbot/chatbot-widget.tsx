@@ -71,7 +71,7 @@ export function ChatbotWidget() {
       const loadingMessage: Message = {
         id: loadingMessageId,
         content: selectedModel === "gemini" 
-          ? "Connecting to Gemini AI..." 
+          ? "Connecting to Gemini 1.5 Flash..." 
           : "Thinking...",
         role: "assistant",
         timestamp: new Date(),
@@ -168,7 +168,7 @@ export function ChatbotWidget() {
       
       // If using Gemini, suggest switching to the default model
       if (selectedModel === "gemini") {
-        errorContent = "I encountered an error connecting to Gemini AI. Would you like to switch to the default model? You can do this using the dropdown at the top of the chat window."
+        errorContent = "I encountered an error connecting to Gemini 1.5 Flash. Would you like to switch to the default model? You can do this using the dropdown at the top of the chat window."
       }
       
       const errorMessage: Message = {
@@ -240,7 +240,7 @@ export function ChatbotWidget() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="default">Default LLM</SelectItem>
-                  <SelectItem value="gemini">Gemini AI</SelectItem>
+                  <SelectItem value="gemini">Gemini 1.5 Flash</SelectItem>
                 </SelectContent>
               </Select>
             </div>
