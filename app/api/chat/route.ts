@@ -3,115 +3,157 @@ import { type NextRequest, NextResponse } from "next/server"
 export async function POST(request: NextRequest) {
   try {
     const { message, history, model } = await request.json()
-    console.log(`API received request with model: ${model}`)
+    console.log(`API received request with model: ${model}, message: "${message.substring(0, 30)}..."`)
 
     let response: string
     
+    // Add a safety check for Gemini-specific errors
     if (model === "gemini") {
-      // Use Gemini API for ML/AI-related queries
-      console.log("Using Gemini API for response")
-      response = await generateGeminiResponse(message, history)
+      try {
+        // Use Gemini API for ML/AI-related queries
+        console.log("Attempting to use Gemini API for response")
+        response = await generateGeminiResponse(message, history)
+        console.log("Gemini API response received successfully")
+      } catch (geminiError: any) {
+        console.error("Gemini API specific error:", geminiError)
+        
+        let errorMessage = "Failed to connect to Gemini API.";
+        
+        // Check for quota exceeded errors
+        if (geminiError.message && geminiError.message.includes("quota exceeded")) {
+          errorMessage = "You've reached the Gemini API quota limit. Please try again later or switch to the default model.";
+        } 
+        // Check for invalid API key errors
+        else if (geminiError.message && geminiError.message.includes("API key")) {
+          errorMessage = "The Gemini API key appears to be invalid. Please check your configuration.";
+        }
+        // Check for endpoint errors
+        else if (geminiError.message && geminiError.message.includes("404")) {
+          errorMessage = "The Gemini API endpoint couldn't be found. This might be due to an API version change.";
+        }
+        
+        // Fall back to the default model automatically
+        console.log("Falling back to default response system due to Gemini API error")
+        response = await generateResponse(message, history)
+        
+        // Return both the fallback response and error information
+        return NextResponse.json({ 
+          response: response,
+          warning: errorMessage,
+          usedFallback: true
+        })
+      }
     } else {
       // Use the default simple response system
       console.log("Using default response system")
       response = await generateResponse(message, history)
     }
 
-    console.log(`API sending response: ${response.substring(0, 50)}...`)
-    return NextResponse.json({ response })
+    if (response) {
+      console.log(`API sending response: ${response.substring(0, 50)}...`)
+      return NextResponse.json({ response })
+    } else {
+      throw new Error("Empty response received from AI model")
+    }
   } catch (error) {
-    console.error("Chat API error:", error)
-    return NextResponse.json({ error: "Failed to process message" }, { status: 500 })
+    console.error("Chat API general error:", error)
+    return NextResponse.json({ 
+      error: "Failed to process message. Please try again or switch models.",
+      fallbackAvailable: true
+    }, { status: 500 })
   }
 }
 
 async function generateGeminiResponse(message: string, history: any[]) {
   try {
     const API_KEY = process.env.GEMINI_API_KEY
+    console.log("Using Gemini API Key (first 5 chars):", API_KEY?.substring(0, 5) + "...")
+    
     if (!API_KEY) {
+      console.error("Gemini API key not found in environment variables")
       throw new Error("Gemini API key not configured")
     }
     
+    // Filter history to keep only the most recent messages (to avoid token limits)
+    const recentHistory = history.slice(-3)
+    
     // Create conversation context from history
-    const conversationContext = history.map((msg: any) => {
+    const conversationContext = recentHistory.map((msg: any) => {
       return {
         role: msg.role === "user" ? "user" : "model",
         parts: [{ text: msg.content }]
       }
     })
 
-    // Add educational context to ensure responses focus on ML/AI topics
-    const educationalPrompt = {
-      role: "user",
-      parts: [{ text: "Please act as an educational assistant focused only on machine learning, AI, data science, mathematics, and statistics. Only respond to questions related to these topics. If a question is unrelated, politely redirect to relevant educational content." }]
-    }
+    // Simplify prompt to reduce token count (to avoid quota issues)
+    const simplifiedPrompt = `You are an educational assistant. Answer this question about ${message.includes("machine learning") ? "machine learning" : message.includes("AI") ? "AI" : message.includes("data") ? "data science" : "computer science"} in an educational way: ${message}`
     
-    // Prepare the current message
-    const userMessage = {
-      role: "user",
-      parts: [{ text: message }]
-    }
+    console.log("Sending request to Gemini API with simplified prompt to avoid quota issues")
     
-    // Complete prompt with history, educational context, and current message
-    const prompt = [educationalPrompt, ...conversationContext, userMessage]
-
-    // Make request to Gemini API
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${API_KEY}`, {
+    // Use the correct API endpoint for Gemini
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`
+    
+    // Make request to Gemini API with simplified payload
+    const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        contents: prompt,
+        contents: [
+          {
+            parts: [
+              { text: simplifiedPrompt }
+            ]
+          }
+        ],
         generationConfig: {
           temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
           maxOutputTokens: 800,
-        },
-        safetySettings: [
-          {
-            category: "HARM_CATEGORY_HARASSMENT",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-          },
-          {
-            category: "HARM_CATEGORY_HATE_SPEECH",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-          },
-          {
-            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-          },
-          {
-            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-          }
-        ]
+        }
       })
     })
 
+    // Check for HTTP errors
+    if (!response.ok) {
+      console.error("Gemini API HTTP error:", response.status, response.statusText)
+      throw new Error(`HTTP error: ${response.status} ${response.statusText}`)
+    }
+
     const data = await response.json()
-    console.log("Gemini API raw response:", JSON.stringify(data).substring(0, 500))
+    
+    // Log partial response for debugging
+    console.log("Gemini API response structure:", Object.keys(data))
     
     if (data.error) {
-      console.error("Gemini API error:", data.error)
+      console.error("Gemini API returned error:", data.error)
       throw new Error(data.error.message || "Error from Gemini API")
     }
     
-    // Extract text response from Gemini with improved logging
-    const textResponse = data.candidates?.[0]?.content?.parts?.[0]?.text
+    // Extract text response with improved path handling
+    let textResponse
     
-    if (!textResponse) {
-      console.error("Could not extract text response from Gemini API", data)
-      return "I'm sorry, I couldn't process that request. Please try again with a question about machine learning, AI, or data science."
+    if (data.candidates && data.candidates.length > 0) {
+      const candidate = data.candidates[0]
+      if (candidate.content && candidate.content.parts && candidate.content.parts.length > 0) {
+        textResponse = candidate.content.parts[0].text
+      }
     }
     
-    console.log("Successfully extracted Gemini response:", textResponse.substring(0, 100))
+    if (!textResponse) {
+      console.error("Unexpected Gemini API response structure:", JSON.stringify(data).substring(0, 200))
+      return "I'm having trouble processing that. Please try again with a question about machine learning, AI, or data science."
+    }
+    
+    console.log("Successfully extracted Gemini response:", textResponse.substring(0, 50) + "...")
     return textResponse
     
   } catch (error) {
     console.error("Gemini API error:", error)
-    return "I'm sorry, I encountered an error connecting to Gemini. Please try again later or switch to the default model."
+    
+    // Instead of returning a message, throw the error to be caught by the parent function
+    // This allows proper error handling in the API route
+    throw new Error(`Gemini API error: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 

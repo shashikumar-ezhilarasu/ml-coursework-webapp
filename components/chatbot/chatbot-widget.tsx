@@ -65,6 +65,21 @@ export function ChatbotWidget() {
 
     try {
       console.log(`Sending message with model: ${selectedModel}`)
+      
+      // Show temporary loading message
+      const loadingMessageId = Date.now().toString()
+      const loadingMessage: Message = {
+        id: loadingMessageId,
+        content: selectedModel === "gemini" 
+          ? "Connecting to Gemini AI..." 
+          : "Thinking...",
+        role: "assistant",
+        timestamp: new Date(),
+      }
+      
+      setMessages((prev) => [...prev, loadingMessage])
+      
+      // Call the API
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -77,28 +92,92 @@ export function ChatbotWidget() {
         }),
       })
 
+      // Remove the loading message
+      setMessages((prev) => prev.filter(msg => msg.id !== loadingMessageId))
+
       if (!response.ok) {
-        throw new Error("Failed to get response")
+        throw new Error(`API error: ${response.status} ${response.statusText}`)
       }
 
       const data = await response.json()
       console.log("API response:", data)
 
+      // Handle warning messages from the API (like quota exceeded)
+      if (data.warning && data.usedFallback && selectedModel === "gemini") {
+        // Show the warning but also the fallback response
+        const warningMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          content: `${data.warning} I've automatically switched to the default model for this response.`,
+          role: "assistant",
+          timestamp: new Date(),
+        }
+        setMessages((prev) => [...prev, warningMessage])
+        
+        // Small delay before showing the actual response
+        setTimeout(() => {
+          const assistantMessage: Message = {
+            id: (Date.now() + 3).toString(),
+            content: data.response,
+            role: "assistant",
+            timestamp: new Date(),
+          }
+          setMessages((prev) => [...prev, assistantMessage])
+          
+          // Set the model selection to default
+          setSelectedModel("default")
+        }, 1000)
+        return
+      }
+      
+      // If there was an error but the API call succeeded, show option to switch models
+      if (data.error && selectedModel === "gemini") {
+        const errorMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          content: `${data.error || "Error connecting to Gemini AI"}. Would you like to try with the default model instead?`,
+          role: "assistant",
+          timestamp: new Date(),
+        }
+        setMessages((prev) => [...prev, errorMessage])
+        
+        // Add a helper message showing how to switch models
+        setTimeout(() => {
+          const helpMessage: Message = {
+            id: (Date.now() + 2).toString(),
+            content: "You can switch models using the dropdown at the top of this chat window.",
+            role: "assistant",
+            timestamp: new Date(),
+          }
+          setMessages((prev) => [...prev, helpMessage])
+        }, 1000)
+        return
+      }
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: data.response || "No response received from API",
+        content: data.response || "No response received. Please try again.",
         role: "assistant",
         timestamp: new Date(),
       }
 
       setMessages((prev) => [...prev, assistantMessage])
     } catch (error) {
+      console.error("Chat error:", error)
+      
+      // Create a user-friendly error message
+      let errorContent = "Sorry, I'm having trouble connecting right now. Please try again later."
+      
+      // If using Gemini, suggest switching to the default model
+      if (selectedModel === "gemini") {
+        errorContent = "I encountered an error connecting to Gemini AI. Would you like to switch to the default model? You can do this using the dropdown at the top of the chat window."
+      }
+      
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: "Sorry, I'm having trouble connecting right now. Please try again later.",
+        content: errorContent,
         role: "assistant",
         timestamp: new Date(),
       }
+      
       setMessages((prev) => [...prev, errorMessage])
     } finally {
       setIsLoading(false)
