@@ -177,28 +177,38 @@ export default function SRMISTPage() {
                   <div className="p-4 space-y-3">
                     <div className="flex justify-between items-center">
                       <p className="text-sm text-muted-foreground">Machine learning fundamentals and probability theory</p>
-                      <Button variant="outline" size="sm">Download Notes</Button>
+                      <Link href="/notes/UNIT 1 Machine Learning.pdf" target="_blank" rel="noopener noreferrer">
+                        <Button variant="outline" size="sm">Download Notes</Button>
+                      </Link>
                     </div>
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4">
                       <div className="bg-card border rounded p-3">
                         <h4 className="font-medium text-sm">1.1 ML Introduction</h4>
                         <p className="text-xs text-muted-foreground mt-1">What and why of machine learning, supervised vs unsupervised</p>
-                        <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        <Link href="/notes/UNIT 1 Machine Learning.pdf" target="_blank" rel="noopener noreferrer">
+                          <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        </Link>
                       </div>
                       <div className="bg-card border rounded p-3">
                         <h4 className="font-medium text-sm">1.2 Polynomial Curve Fitting</h4>
                         <p className="text-xs text-muted-foreground mt-1">Fitting curves to data points and understanding overfitting</p>
-                        <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        <Link href="/notes/UNIT 1 OLD.pdf" target="_blank" rel="noopener noreferrer">
+                          <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        </Link>
                       </div>
                       <div className="bg-card border rounded p-3">
                         <h4 className="font-medium text-sm">1.3 Probability Theory</h4>
                         <p className="text-xs text-muted-foreground mt-1">Random variables, Bayes rule, independence</p>
-                        <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        <Link href="/notes/UNIT 1 Machine Learning.pdf" target="_blank" rel="noopener noreferrer">
+                          <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        </Link>
                       </div>
                       <div className="bg-card border rounded p-3">
                         <h4 className="font-medium text-sm">1.4 Statistical Concepts</h4>
                         <p className="text-xs text-muted-foreground mt-1">Quantiles, mean, variance, expectation, covariance</p>
-                        <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        <Link href="/notes/UNIT 1 Machine Learning.pdf" target="_blank" rel="noopener noreferrer">
+                          <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -215,13 +225,17 @@ export default function SRMISTPage() {
                   <div className="p-4 space-y-3">
                     <div className="flex justify-between items-center">
                       <p className="text-sm text-muted-foreground">Regression techniques and classification models</p>
-                      <Button variant="outline" size="sm">Download Notes</Button>
+                      <Link href="/notes/Unit-2.OLD pdf.pdf" target="_blank" rel="noopener noreferrer">
+                        <Button variant="outline" size="sm">Download Notes</Button>
+                      </Link>
                     </div>
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4">
                       <div className="bg-card border rounded p-3">
                         <h4 className="font-medium text-sm">2.1 Maximum Likelihood</h4>
                         <p className="text-xs text-muted-foreground mt-1">Least squares and robust linear expression</p>
-                        <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        <Link href="/notes/Unit-2.OLD pdf.pdf" target="_blank" rel="noopener noreferrer">
+                          <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        </Link>
                       </div>
                       <div className="bg-card border rounded p-3">
                         <h4 className="font-medium text-sm">2.2 Ridge Regression</h4>
@@ -253,28 +267,38 @@ export default function SRMISTPage() {
                   <div className="p-4 space-y-3">
                     <div className="flex justify-between items-center">
                       <p className="text-sm text-muted-foreground">Clustering and dimensionality reduction techniques</p>
-                      <Button variant="outline" size="sm">Download Notes</Button>
+                      <Link href="/notes/K-means clustering with problems.pdf" target="_blank" rel="noopener noreferrer">
+                        <Button variant="outline" size="sm">Download Notes</Button>
+                      </Link>
                     </div>
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4">
                       <div className="bg-card border rounded p-3">
                         <h4 className="font-medium text-sm">3.1 K-means Clustering</h4>
                         <p className="text-xs text-muted-foreground mt-1">Partitioning methods for clustering</p>
-                        <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        <Link href="/notes/K-means clustering with problems.pdf" target="_blank" rel="noopener noreferrer">
+                          <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        </Link>
                       </div>
                       <div className="bg-card border rounded p-3">
                         <h4 className="font-medium text-sm">3.2 Gaussian Mixtures</h4>
                         <p className="text-xs text-muted-foreground mt-1">EM algorithm and mixture models</p>
-                        <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        <Link href="/notes/Problems of K means clustering.pdf" target="_blank" rel="noopener noreferrer">
+                          <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        </Link>
                       </div>
                       <div className="bg-card border rounded p-3">
                         <h4 className="font-medium text-sm">3.3 Dimensionality Reduction</h4>
                         <p className="text-xs text-muted-foreground mt-1">Factor analysis and PCA</p>
-                        <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        <Link href="/notes/K-means clustering with problems.pdf" target="_blank" rel="noopener noreferrer">
+                          <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        </Link>
                       </div>
                       <div className="bg-card border rounded p-3">
                         <h4 className="font-medium text-sm">3.4 Hierarchical Clustering</h4>
                         <p className="text-xs text-muted-foreground mt-1">Agglomerative and divisive clustering methods</p>
-                        <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        <Link href="/notes/Hierarchial clustering.pdf" target="_blank" rel="noopener noreferrer">
+                          <Button variant="ghost" size="sm" className="mt-2 w-full">View</Button>
+                        </Link>
                       </div>
                     </div>
                   </div>
