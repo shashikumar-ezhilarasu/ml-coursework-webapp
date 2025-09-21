@@ -112,7 +112,7 @@ export function LearningPathsGrid({ learningPaths, userProgress }: LearningPaths
                     </div>
 
                     <Button asChild className="w-full bg-primary hover:bg-primary/90">
-                      <Link href={`/learning-paths/${path.id}`} className="flex items-center justify-center gap-2">
+                      <Link href={`/learning-paths/${path.title.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and')}`} className="flex items-center justify-center gap-2">
                         {isStarted ? "Continue" : "Start"} Learning
                         <ArrowRight className="h-4 w-4" />
                       </Link>

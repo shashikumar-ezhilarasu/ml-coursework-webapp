@@ -18,7 +18,7 @@ interface LearningPathModulesProps {
   modules: Module[]
   completedModules: string[]
   learningPathId: string
-  userId: string
+  userId?: string
 }
 
 export function LearningPathModules({ modules, completedModules, learningPathId, userId }: LearningPathModulesProps) {
@@ -48,7 +48,7 @@ export function LearningPathModules({ modules, completedModules, learningPathId,
 
       // Mock progress update - in real implementation would update Firebase
       console.log("Updating progress:", {
-        userId,
+        userId: userId || "anonymous",
         learningPathId,
         completedModules: newCompletedModules,
         progressPercentage
