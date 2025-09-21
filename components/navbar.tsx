@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Brain, Menu, X, BookOpen, Home, FileText } from "lucide-react"
+import { Brain, Menu, X, BookOpen, Home, FileText, GraduationCap } from "lucide-react"
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -42,6 +42,13 @@ export function Navbar() {
             >
               <FileText className="h-4 w-4" />
               <span>Courses</span>
+            </Link>
+            <Link 
+              href="/srmist" 
+              className="flex items-center space-x-1 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <GraduationCap className="h-4 w-4" />
+              <span>SRMIST</span>
             </Link>
           </div>
 
@@ -92,6 +99,14 @@ export function Navbar() {
               >
                 <FileText className="h-4 w-4" />
                 <span>Courses</span>
+              </Link>
+              <Link
+                href="/srmist"
+                className="flex items-center space-x-2 rounded-md px-3 py-2 text-base font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <GraduationCap className="h-4 w-4" />
+                <span>SRMIST</span>
               </Link>
               {/* Mobile Auth Buttons - COMMENTED OUT FOR NOW */}
               {/*
