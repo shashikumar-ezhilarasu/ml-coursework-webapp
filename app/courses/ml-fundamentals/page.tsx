@@ -303,9 +303,11 @@ print('Accuracy:', accuracy_score(yte, clf.predict(Xte)))`
 
             {/* Quick Actions */}
             <div className="mt-8 space-y-2">
-              <Button size="sm" className="w-full">
-                <Play className="h-3 w-3 mr-2" />
-                Start Course
+              <Button asChild size="sm" className="w-full">
+                <Link href="/courses/ml-fundamentals/learn">
+                  <Play className="h-3 w-3 mr-2" />
+                  Start Course
+                </Link>
               </Button>
               <Button size="sm" variant="outline" className="w-full">
                 <BookOpen className="h-3 w-3 mr-2" />
@@ -704,9 +706,11 @@ jupyter notebook`}
                     Master the core concepts that power modern AI systems.
                   </p>
                   <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                    <Button size="lg" className="flex items-center">
-                      <Play className="mr-2 h-4 w-4" />
-                      Start Course
+                    <Button asChild size="lg" className="flex items-center">
+                      <Link href="/courses/ml-fundamentals/learn">
+                        <Play className="mr-2 h-4 w-4" />
+                        Start Course
+                      </Link>
                     </Button>
                     <Button asChild variant="outline" size="lg">
                       <Link href="/courses">Browse All Courses</Link>

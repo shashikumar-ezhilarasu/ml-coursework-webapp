@@ -26,7 +26,8 @@ import {
   FileText,
   Target,
   Book,
-  ExternalLink
+  ExternalLink,
+  Lightbulb
 } from "lucide-react"
 import Link from "next/link"
 
@@ -37,6 +38,13 @@ export default function DocumentationPage() {
   // Navigation sections
   const navSections = [
     { id: "overview", title: "Overview", icon: BookOpen },
+    { id: "introduction-to-ml", title: "What is Machine Learning?", icon: Brain },
+    { id: "importance", title: "Why ML is Important", icon: Target },
+    { id: "how-machines-learn", title: "How Machines Learn", icon: BarChart3 },
+    { id: "types-of-ml", title: "Types of ML", icon: Target },
+    { id: "benefits", title: "Benefits of ML", icon: Lightbulb },
+    { id: "challenges", title: "Challenges & Considerations", icon: FileText },
+    { id: "applications", title: "Real-World Applications", icon: Brain },
     { id: "getting-started", title: "Getting Started", icon: Target },
     { id: "learning-paths", title: "Learning Paths", icon: Brain },
     { id: "prerequisites", title: "Prerequisites", icon: CheckCircle },
@@ -338,6 +346,250 @@ export default function DocumentationPage() {
           </section>
 
           <div className="mx-auto max-w-5xl px-6 py-16 lg:px-8">
+            {/* Introduction to ML Section */}
+            <section id="introduction-to-ml" className="mb-20">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Brain className="h-5 w-5 text-primary" />
+                    What is Machine Learning?
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Machine Learning (ML) is the study of algorithms and statistical models that computer systems use to perform tasks by relying on patterns and inference rather than explicit instructions. ML allows systems to improve their performance on a task over time with more data.
+                  </p>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* Importance Section */}
+            <section id="importance" className="mb-20">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="h-5 w-5 text-primary" />
+                    Why Machine Learning is Important
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <strong>Handling Complex & Unstructured Data:</strong> Tasks like image recognition, natural language processing, speech recognition which are very hard to manually program rules for.
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <strong>Adaptivity:</strong> ML systems can improve as they get more data, or when environments change.
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <strong>Automation of Repetitive Tasks:</strong> Tasks that are time-consuming or error-prone when done manually can often be automated (spam detection, recommendation systems).
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <strong>Personalisation:</strong> Tailoring experiences to individual users (recommendations, adaptive interfaces).
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <strong>Scale:</strong> Ability to process large datasets and extract patterns which humans can't see at scale.
+                      </div>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* How Machines Learn Section */}
+            <section id="how-machines-learn" className="mb-20">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BarChart3 className="h-5 w-5 text-primary" />
+                    How Machines "Learn" — Core Components
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ol className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">1</span>
+                      <span>Data collection & preprocessing</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">2</span>
+                      <span>Algorithms / model selection</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">3</span>
+                      <span>Training</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">4</span>
+                      <span>Evaluation</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">5</span>
+                      <span>Feedback / iteration</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">6</span>
+                      <span>Deployment & monitoring</span>
+                    </li>
+                  </ol>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* Types of ML Section */}
+            <section id="types-of-ml" className="mb-20">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="h-5 w-5 text-primary" />
+                    Types of Machine Learning
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-4">
+                    <li className="border-l-4 border-primary pl-4">
+                      <div className="font-semibold text-primary">Supervised Learning</div>
+                      <p className="text-sm text-muted-foreground mt-1">Training with labeled data. Tasks include classification and regression.</p>
+                    </li>
+                    <li className="border-l-4 border-secondary pl-4">
+                      <div className="font-semibold text-secondary-foreground">Unsupervised Learning</div>
+                      <p className="text-sm text-muted-foreground mt-1">Working with unlabeled data. Discovering structure like clustering, association rules.</p>
+                    </li>
+                    <li className="border-l-4 border-accent pl-4">
+                      <div className="font-semibold text-accent-foreground">Reinforcement Learning</div>
+                      <p className="text-sm text-muted-foreground mt-1">Training agents to take actions in an environment to maximize rewards.</p>
+                    </li>
+                    <li className="border-l-4 border-muted pl-4">
+                      <div className="font-semibold">Semi-Supervised & Self-Supervised Learning</div>
+                      <p className="text-sm text-muted-foreground mt-1">Combines labeled and unlabeled data to improve learning; used when labels are expensive.</p>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* Benefits Section */}
+            <section id="benefits" className="mb-20">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Lightbulb className="h-5 w-5 text-primary" />
+                    Benefits of Machine Learning
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground mb-4">Machine Learning offers:</p>
+                  <ul className="grid md:grid-cols-2 gap-3">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary" />
+                      <span>Data-driven decision making</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary" />
+                      <span>Efficiency & automation</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary" />
+                      <span>Personalization</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary" />
+                      <span>Innovation and new product opportunities</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* Challenges Section */}
+            <section id="challenges" className="mb-20">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-primary" />
+                    Challenges & Considerations
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <span>Data quality and bias</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <span>Overfitting / underfitting</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <span>Interpretability & explainability</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <span>Privacy & security concerns</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <span>Computational cost and scalability</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* Applications Section */}
+            <section id="applications" className="mb-20">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Brain className="h-5 w-5 text-primary" />
+                    Real-World Applications
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-3">
+                      <div>
+                        <div className="font-semibold text-primary">Healthcare</div>
+                        <p className="text-sm text-muted-foreground">Diagnosis via medical imaging, predictive analytics</p>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-primary">Finance</div>
+                        <p className="text-sm text-muted-foreground">Fraud detection, risk scoring</p>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-primary">Retail / E-Commerce</div>
+                        <p className="text-sm text-muted-foreground">Recommendation systems, demand forecasting</p>
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="font-semibold text-primary">Transportation & Logistics</div>
+                        <p className="text-sm text-muted-foreground">Route optimization, supply chain improvements</p>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-primary">Social Media / Entertainment</div>
+                        <p className="text-sm text-muted-foreground">Content recommendation, sentiment analysis</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+
             {/* Getting Started Section */}
             <section id="getting-started" className="mb-20">
               <div className="text-center mb-12">
