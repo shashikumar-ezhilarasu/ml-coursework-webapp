@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
 
     let response: string
     
-    // Add a safety check for Gemini-specific errors
+    // Handle different model options
     if (model === "gemini") {
       try {
         // Use Gemini API for ML/AI-related queries
@@ -34,6 +34,45 @@ export async function POST(request: NextRequest) {
         
         // Fall back to the default model automatically
         console.log("Falling back to default response system due to Gemini API error")
+        response = await generateResponse(message, history)
+        
+        // Return both the fallback response and error information
+        return NextResponse.json({ 
+          response: response,
+          warning: errorMessage,
+          usedFallback: true
+        })
+      }
+    } else if (model === "localLLM") {
+      try {
+        // Use local LLM server for responses
+        console.log("Attempting to use Local LLM server for response")
+        response = await generateLocalLLMResponse(message)
+        console.log("Local LLM response received successfully")
+      } catch (localLLMError: any) {
+        console.error("Local LLM specific error:", localLLMError)
+        
+        let errorMessage = "Failed to connect to Local LLM server.";
+        
+        // Check for connection errors
+        if (localLLMError.message && localLLMError.message.includes("ECONNREFUSED")) {
+          errorMessage = "Could not connect to the Local LLM server. Please make sure the server is running at http://localhost:8000.";
+        }
+        // Check for timeout errors
+        else if (localLLMError.message && localLLMError.message.includes("timeout")) {
+          errorMessage = "The Local LLM server took too long to respond. The server might be processing another request or under heavy load.";
+        }
+        // Check for invalid response format
+        else if (localLLMError.message && localLLMError.message.includes("Invalid response format")) {
+          errorMessage = "The Local LLM server returned an unexpected response format. There might be an issue with the server implementation.";
+        }
+        // Check for HTTP errors
+        else if (localLLMError.message && localLLMError.message.includes("HTTP error")) {
+          errorMessage = "The Local LLM server returned an error. Please check the server logs for more information.";
+        }
+        
+        // Fall back to the default model automatically
+        console.log("Falling back to default response system due to Local LLM error")
         response = await generateResponse(message, history)
         
         // Return both the fallback response and error information
@@ -168,6 +207,50 @@ Focus only on educational content related to these topics.`
     // Instead of returning a message, throw the error to be caught by the parent function
     // This allows proper error handling in the API route
     throw new Error(`Gemini API error: ${error instanceof Error ? error.message : 'Unknown error'}`)
+  }
+}
+
+async function generateLocalLLMResponse(message: string) {
+  try {
+    console.log("Sending request to Local LLM server")
+    
+    // Default to localhost:8000 as seen in your logs
+    const LOCAL_LLM_SERVER = process.env.LOCAL_LLM_SERVER || "http://localhost:8000"
+    
+    // Make request to the local LLM server endpoint
+    const response = await fetch(`${LOCAL_LLM_SERVER}/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        query: message
+      })
+    })
+
+    // Check for HTTP errors
+    if (!response.ok) {
+      console.error("Local LLM server HTTP error:", response.status, response.statusText)
+      throw new Error(`HTTP error: ${response.status} ${response.statusText}`)
+    }
+
+    const data = await response.json()
+    
+    // Log partial response for debugging
+    console.log("Local LLM response received:", Object.keys(data))
+    
+    // Extract the answer from the response
+    if (!data.answer) {
+      console.error("Unexpected Local LLM server response structure:", JSON.stringify(data).substring(0, 200))
+      throw new Error("Invalid response format from Local LLM server")
+    }
+    
+    console.log("Successfully extracted Local LLM response:", data.answer.substring(0, 50) + "...")
+    return data.answer
+    
+  } catch (error) {
+    console.error("Local LLM server error:", error)
+    throw new Error(`Local LLM server error: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 

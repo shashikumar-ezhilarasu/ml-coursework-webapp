@@ -34,7 +34,7 @@ export default function SRMISTPage() {
             <div>
               <h2 className="text-2xl font-semibold">Machine Learning Syllabus</h2>
               <p className="mt-2 text-muted-foreground">
-                <span className="font-medium">Regulations - 2021</span> | Department of Computer Science & Engineering | Course Code: 18CS723
+                <span className="font-medium">Regulations - 2021</span> | Department of Computer Science & Engineering | Course Code: 21CS723
               </p>
               
               <div className="mt-6 space-y-6">

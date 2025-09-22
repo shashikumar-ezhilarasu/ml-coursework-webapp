@@ -12,6 +12,7 @@ A Next.js web application designed to support students learning Machine Learning
 ### Completed Features
 
 #### Core Features
+
 - ✅ Responsive landing page with modern UI
 - ✅ Course catalog and browsing
 - ✅ Dashboard for tracking progress
@@ -22,6 +23,7 @@ A Next.js web application designed to support students learning Machine Learning
 - ✅ Notes management system
 
 #### SRMIST Integration
+
 - ✅ SRMIST-specific navigation in navbar
 - ✅ Machine Learning syllabus display
 - ✅ Unit-based course structure
@@ -30,12 +32,14 @@ A Next.js web application designed to support students learning Machine Learning
 - ✅ Home button for easy navigation
 
 #### AI and Learning Tools
+
 - ✅ AI-powered chatbot for ML-related questions
 - ✅ Model selection between Default LLM and Gemini 1.5 Flash
 - ✅ Educational content focus for all AI responses
 - ✅ Topic-specific responses for ML, AI, and data science
 
 #### UX/UI
+
 - ✅ Mobile-responsive design
 - ✅ Dark mode support
 - ✅ Accessible UI components
@@ -107,12 +111,14 @@ ml-coursework-webapp/
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/Shashikumar-ezhilarasu/ml-coursework-webapp.git
    cd ml-coursework-webapp
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    # or
@@ -120,6 +126,7 @@ ml-coursework-webapp/
    ```
 
 3. Create a `.env.local` file in the root directory with the following variables:
+
    ```
    # Firebase Configuration
    NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
@@ -129,12 +136,13 @@ ml-coursework-webapp/
    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
    NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
    NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
-   
+
    # Gemini AI API
    GEMINI_API_KEY=your_gemini_api_key
    ```
 
 4. Run the development server:
+
    ```bash
    npm run dev
    # or

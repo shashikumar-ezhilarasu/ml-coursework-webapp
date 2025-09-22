@@ -10,7 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { MessageSquare, Send, X, Minimize2, Maximize2, Bot, User } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-type ModelType = "default" | "gemini"
+type ModelType = "default" | "gemini" | "localLLM"
 
 interface Message {
   id: string
@@ -72,6 +72,8 @@ export function ChatbotWidget() {
         id: loadingMessageId,
         content: selectedModel === "gemini" 
           ? "Connecting to Gemini 1.5 Flash..." 
+          : selectedModel === "localLLM"
+          ? "Connecting to Local ML Model..."
           : "Thinking...",
         role: "assistant",
         timestamp: new Date(),
@@ -130,10 +132,18 @@ export function ChatbotWidget() {
       }
       
       // If there was an error but the API call succeeded, show option to switch models
-      if (data.error && selectedModel === "gemini") {
+      if (data.error) {
+        let errorContent = `${data.error || "Error connecting to the AI model"}. Would you like to try with the default model instead?`;
+        
+        if (selectedModel === "localLLM") {
+          errorContent = `${data.error || "Error connecting to Local ML Model"}. Would you like to try with the default model instead?`;
+        } else if (selectedModel === "gemini") {
+          errorContent = `${data.error || "Error connecting to Gemini AI"}. Would you like to try with the default model instead?`;
+        }
+        
         const errorMessage: Message = {
           id: (Date.now() + 1).toString(),
-          content: `${data.error || "Error connecting to Gemini AI"}. Would you like to try with the default model instead?`,
+          content: errorContent,
           role: "assistant",
           timestamp: new Date(),
         }
@@ -169,6 +179,10 @@ export function ChatbotWidget() {
       // If using Gemini, suggest switching to the default model
       if (selectedModel === "gemini") {
         errorContent = "I encountered an error connecting to Gemini 1.5 Flash. Would you like to switch to the default model? You can do this using the dropdown at the top of the chat window."
+      } 
+      // If using Local LLM, provide specific error message
+      else if (selectedModel === "localLLM") {
+        errorContent = "I encountered an error connecting to the Local ML Model. The server might not be running or is unavailable. Would you like to switch to the default model? You can do this using the dropdown at the top of the chat window."
       }
       
       const errorMessage: Message = {
@@ -241,6 +255,7 @@ export function ChatbotWidget() {
                 <SelectContent>
                   <SelectItem value="default">Default LLM</SelectItem>
                   <SelectItem value="gemini">Gemini 1.5 Flash</SelectItem>
+                  <SelectItem value="localLLM">Local ML Model</SelectItem>
                 </SelectContent>
               </Select>
             </div>
